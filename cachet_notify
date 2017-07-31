@@ -1,22 +1,21 @@
 #!/usr/bin/php
 <?php
 
-if ($argc != 5) {
-	echo 'Usage: ' . basename(__FILE__) . ' cachet_component service_name service_state service_output' . "\n";
-	exit(1);
+if ($argc != 4) {
+        echo 'Usage: ' . basename(__FILE__) . ' cachet_component service_name service_state' . "\n";
+        exit(1);
 }
 
 $cachet_url = 'https://xxxxx/api/v1/';
 $api_key = 'xxxxx';
 
-$incident_prefix = '[Nagios]';
+$incident_prefix = '[Ekylibre]';
 $cachet_notify_subscribers = true; // Enable subscribers notifcation for incidents creation and updates
 $cachet_incident_visible = true;
 
 $cachet_component = $argv[1];
 $service_name = $argv[2];
 $service_status = $argv[3];
-$service_output = $argv[4];
 
 define('CACHET_STATUS_INVESTIGATING', 1);
 define('CACHET_STATUS_IDENTIFIED', 2);
@@ -96,7 +95,7 @@ if ($service_status == 'WARNING') { // Hope it will be back soon
 	echo 'WARNING SOFT: creating incident' . "\n";
 	$query = array(
 		'name' => $incident_prefix . ' ' . $service_name,
-		'message' => $service_output,
+		'message' => 'The service may be slowed or unavailable.'
 		'status' => CACHET_STATUS_WATCHING,
 		'visible' => $cachet_incident_visible,
 		'component_id' => $cachet_component_id,
@@ -112,7 +111,7 @@ if ($service_status == 'WARNING') { // Hope it will be back soon
 	echo 'KO HARD: creating incident' . "\n";
 	$query = array(
 		'name' => $incident_prefix . ' ' . $service_name,
-		'message' => $service_output,
+		'message' => 'The service may be slowed or unavailable.'
 		'status' => CACHET_STATUS_INVESTIGATING,
 		'visible' => $cachet_incident_visible,
 		'component_id' => $cachet_component_id,
@@ -128,7 +127,7 @@ if ($service_status == 'WARNING') { // Hope it will be back soon
 	echo 'OK Hard: creating incident' . "\n";
 	$query = array(
 		'name' => $incident_prefix . ' ' . $service_name,
-		'message' => $service_output,
+		'message' => 'The service was recovered.',
 		'status' => CACHET_STATUS_FIXED,
 		'visible' => $cachet_incident_visible,
 		'component_id' => $cachet_component_id,
