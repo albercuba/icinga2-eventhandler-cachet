@@ -62,7 +62,8 @@ function cachet_query($api_part, $action = 'GET', $data = null) {
 }
 
 /* Find Cachet component ID */
-$result = cachet_query('components');
+$encoded_name = str_replace(' ', '%20', $service_name);
+$result = cachet_query('components?name=' . $encoded_name);
 if ($result['code'] != 200) {
 	echo 'Can\'t query components' . "\n";
 	exit(1);
@@ -95,7 +96,7 @@ if ($service_status == 'WARNING') { // Hope it will be back soon
 	echo 'WARNING SOFT: creating incident' . "\n";
 	$query = array(
 		'name' => $incident_prefix . ' ' . $service_name,
-		'message' => 'The service may be slowed or unavailable.'
+		'message' => 'The service may be slowed or unavailable.',
 		'status' => CACHET_STATUS_WATCHING,
 		'visible' => $cachet_incident_visible,
 		'component_id' => $cachet_component_id,
@@ -111,7 +112,7 @@ if ($service_status == 'WARNING') { // Hope it will be back soon
 	echo 'KO HARD: creating incident' . "\n";
 	$query = array(
 		'name' => $incident_prefix . ' ' . $service_name,
-		'message' => 'The service may be slowed or unavailable.'
+		'message' => 'The service may be slowed or unavailable.',
 		'status' => CACHET_STATUS_INVESTIGATING,
 		'visible' => $cachet_incident_visible,
 		'component_id' => $cachet_component_id,
