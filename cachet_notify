@@ -109,7 +109,7 @@ if ($service_status == 'WARNING') { // Hope it will be back soon
 		exit(1);
 	}
 } elseif ($service_status == 'CRITICAL') { // Something went wrong, let's notify
-	echo 'KO HARD: creating incident' . "\n";
+	echo 'OK HARD: creating incident' . "\n";
 	$query = array(
 		'name' => $incident_prefix . ' ' . $service_name,
 		'message' => 'The service may be slowed or unavailable.',
